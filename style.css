@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: whitesmoke;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    background: rgb(230, 251, 255);
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px 5px gainsboro;
+}
+
+h2 {
+    color: blueviolet;
+    text-emphasis: "*";
+}
+
+#intro,
+#turns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+input {
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    width: 100%;
+}
+
+input:read-only{
+    background: rgb(240, 240, 240);
+    cursor: not-allowed;
+}
+
+#high-number,
+#low-number,
+#failure,
+#success-number {
+    height: 3rem;
+    width: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+#high-number,
+#failure,
+#low-number {
+    color: rgba(255, 0, 0, 0.8);
+    background: rgb(253, 222, 222);
+}
+
+#failure{
+    gap: 5px;
+}
+
+#success-number {
+    color: green;
+    background: rgb(175, 235, 175);
+}
+
+button {
+    padding: 15px;
+    background: blueviolet;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+span {
+    font-weight: bold;
+}
+
+.error {
+    border: 2px solid red !important;
+}
+
+.success {
+    border: 2px solid green !important;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
