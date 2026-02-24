@@ -1,75 +1,104 @@
-const form = document.querySelector('form');
-const turnsSection = document.getElementById('turns-section')
-const input = document.getElementById('input-number')
-const checkButton = document.getElementById('check-button')
-const restartButton = document.getElementById('restart-button')
-const highNumberMessage = document.getElementById('high-number')
-const lowNumberMessage = document.getElementById('low-number')
-const successNumberMessage = document.getElementById('success-number')
-const nombreEssaie = document.getElementById('remaining-number')
-const nombreEssaieInitial = document.getElementById('initial-number')
-const failureMessage = document.getElementById('failure')
-const answer = document.getElementById('answer')
+let tentative
+let nombreMax
 
-const nombre = Math.floor(Math.random() * (10 - 1 + 1)) + 1
-let tour = 0
-let tentative = 5
+function enregistrerInfos(nombreTentatives, nombreMaximal) {
+    tentative = nombreTentatives
+    nombreMax = nombreMaximal
+    localStorage.setItem('tentative', tentative)
+    localStorage.setItem('nombreMax', nombreMax)
+    window.location.href = "game.html"
+}
 
-nombreEssaie.innerText = tour
-nombreEssaieInitial.innerText = tentative
+if (document.getElementById('facile') || document.getElementById('intermediaire') || document.getElementById('difficile')) {
+    document.getElementById('facile').addEventListener('click', () => enregistrerInfos(3, 10))
+    document.getElementById('intermediaire').addEventListener('click', () => enregistrerInfos(4,50))
+    document.getElementById('difficile').addEventListener('click', () => enregistrerInfos(5,100))
+}
 
-form.addEventListener("submit", (event) => {
-    event.preventDefault()
-    const nombreEntree = input.value.trim()
-    tentative--
-    tour++
+if (document.getElementById('input-number') || document.getElementById('check-button')) {
+    let tentative = localStorage.getItem('tentative')
+    const nombreMax = localStorage.getItem('nombreMax')
+
+    const form = document.querySelector('form');
+    const turnsSection = document.getElementById('turns-section')
+    const input = document.getElementById('input-number')
+    const checkButton = document.getElementById('check-button')
+    const menuButton = document.getElementById('menu-button')
+    const restartButton = document.getElementById('restart-button')
+    const highNumberMessage = document.getElementById('high-number')
+    const lowNumberMessage = document.getElementById('low-number')
+    const successNumberMessage = document.getElementById('success-number')
+    const nombreEssaie = document.getElementById('remaining-number')
+    const essaieInitialBas = document.getElementById('initial-number-down')
+    const essaieInitialHaut = document.getElementById('initial-number-up')
+    const failureMessage = document.getElementById('failure')
+    const answer = document.getElementById('answer')
+    const maxNum = document.getElementById('max-num')
+
+    const nombre = Math.floor(Math.random() * (nombreMax - 1 + 1)) + 1
+    let tour = 0
+    maxNum.innerText = nombreMax
     nombreEssaie.innerText = tour
-    if (tentative > 0) {
-        turnsSection.style.display = "flex"
-        if (nombreEntree == nombre) {
+    essaieInitialBas.innerText = tentative
+    essaieInitialHaut.innerText = tentative
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault()
+        const nombreEntree = input.value.trim()
+        tentative--
+        tour++
+        nombreEssaie.innerText = tour
+        if (tentative > 0) {
+            turnsSection.style.display = "flex"
+            if (nombreEntree == nombre) {
+                resetDisplay()
+                successNumberMessage.style.display = "flex"
+                input.classList.add("success")
+                input.readOnly = true
+                checkButton.disabled = true
+                setTimeout(() => {
+                    checkButton.style.display = "none"
+                    restartButton.style.display = "block"
+                    menuButton.style.display = "block"
+                }, 3000)
+            } else if (nombreEntree > nombre) {
+                resetDisplay()
+                setTimeout(() => {
+                    highNumberMessage.style.display = "flex"
+                    input.classList.add("error")
+                }, 1);
+            } else {
+                resetDisplay()
+                setTimeout(() => {
+                    lowNumberMessage.style.display = "flex"
+                    input.classList.add("error")
+                }, 1);
+            }
+        } else {
             resetDisplay()
-            successNumberMessage.style.display = "flex"
-            input.classList.add("success")
-            input.readOnly = true
+            failureMessage.style.display = "flex"
+            answer.innerText = nombre
             checkButton.disabled = true
             setTimeout(() => {
                 checkButton.style.display = "none"
                 restartButton.style.display = "block"
+                menuButton.style.display = "block"
             }, 3000)
-        } else if (nombreEntree > nombre) {
-            resetDisplay()
-            setTimeout(() => {
-                highNumberMessage.style.display = "flex"
-                input.classList.add("error")
-            }, 1);
-        } else {
-            resetDisplay()
-            setTimeout(() => {
-                lowNumberMessage.style.display = "flex"
-                input.classList.add("error")
-            }, 1);
+            input.readOnly = true
         }
-    } else {
-        resetDisplay()
-        failureMessage.style.display = "flex"
-        answer.innerText = nombre
-        checkButton.disabled = true
-        setTimeout(() => {
-            checkButton.style.display = "none"
-            restartButton.style.display = "block"
-        }, 3000)
-        input.readOnly = true
+    })
+
+    restartButton.addEventListener('click', () => window.location.reload())
+    menuButton.addEventListener('click', () => window.location.href = "index.html")
+
+    function resetDisplay() {
+        successNumberMessage.style.display = "none"
+        lowNumberMessage.style.display = "none"
+        highNumberMessage.style.display = "none"
+        failureMessage.style.display = "none"
+        restartButton.style.display = "none"
+        menuButton.style.display = "none"
+        input.classList.remove("error")
+        input.classList.remove("success")
     }
-})
-
-restartButton.addEventListener('click', () => window.location.reload())
-
-function resetDisplay() {
-    successNumberMessage.style.display = "none"
-    lowNumberMessage.style.display = "none"
-    highNumberMessage.style.display = "none"
-    failureMessage.style.display = "none"
-    restartButton.style.display = "none"
-    input.classList.remove("error")
-    input.classList.remove("success")
 }
