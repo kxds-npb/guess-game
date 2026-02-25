@@ -7,7 +7,7 @@
 
 body {
     min-height: 100vh;
-    background: rgba(245, 245, 245, 0.2);
+    background: rgba(245, 245, 245, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,9 +19,9 @@ main {
     flex-direction: column;
     align-items: center;
     gap: 30px;
-    background: whitesmoke;
+    background: rgba(211, 211, 211, 0.5);
     border-radius: 10px;
-    box-shadow: 5px 5px 5px 5px gainsboro;
+    box-shadow: 5px 5px 5px 5px rgba(128, 128, 128, 0.5);
 }
 
 h2 {
@@ -60,6 +60,11 @@ input {
 input:read-only{
     background: rgb(240, 240, 240);
     cursor: not-allowed;
+}
+
+#previous-number-message{
+    color: rgba(0, 0, 0, 0.6);
+    display: none;
 }
 
 #high-number,

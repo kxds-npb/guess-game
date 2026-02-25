@@ -1,5 +1,5 @@
-let tentative
-let nombreMax
+let tentative = 0
+let nombreMax = 0
 
 function enregistrerInfos(nombreTentatives, nombreMaximal) {
     tentative = nombreTentatives
@@ -11,8 +11,8 @@ function enregistrerInfos(nombreTentatives, nombreMaximal) {
 
 if (document.getElementById('facile') || document.getElementById('intermediaire') || document.getElementById('difficile')) {
     document.getElementById('facile').addEventListener('click', () => enregistrerInfos(3, 10))
-    document.getElementById('intermediaire').addEventListener('click', () => enregistrerInfos(4,50))
-    document.getElementById('difficile').addEventListener('click', () => enregistrerInfos(5,100))
+    document.getElementById('intermediaire').addEventListener('click', () => enregistrerInfos(4, 50))
+    document.getElementById('difficile').addEventListener('click', () => enregistrerInfos(5, 100))
 }
 
 if (document.getElementById('input-number') || document.getElementById('check-button')) {
@@ -34,6 +34,8 @@ if (document.getElementById('input-number') || document.getElementById('check-bu
     const failureMessage = document.getElementById('failure')
     const answer = document.getElementById('answer')
     const maxNum = document.getElementById('max-num')
+    const nombrePrecedent = document.getElementById('previous-number')
+    const messageNombrePrecedent = document.getElementById('previous-number-message')
 
     const nombre = Math.floor(Math.random() * (nombreMax - 1 + 1)) + 1
     let tour = 0
@@ -48,44 +50,49 @@ if (document.getElementById('input-number') || document.getElementById('check-bu
         tentative--
         tour++
         nombreEssaie.innerText = tour
-        if (tentative > 0) {
-            turnsSection.style.display = "flex"
-            if (nombreEntree == nombre) {
-                resetDisplay()
-                successNumberMessage.style.display = "flex"
-                input.classList.add("success")
-                input.readOnly = true
-                checkButton.disabled = true
-                setTimeout(() => {
-                    checkButton.style.display = "none"
-                    restartButton.style.display = "block"
-                    menuButton.style.display = "block"
-                }, 3000)
-            } else if (nombreEntree > nombre) {
-                resetDisplay()
-                setTimeout(() => {
-                    highNumberMessage.style.display = "flex"
-                    input.classList.add("error")
-                }, 1);
-            } else {
-                resetDisplay()
-                setTimeout(() => {
-                    lowNumberMessage.style.display = "flex"
-                    input.classList.add("error")
-                }, 1);
-            }
-        } else {
+        nombrePrecedent.innerText = nombreEntree
+        messageNombrePrecedent.style.display = "block"
+        turnsSection.style.display = "flex"
+        if (nombreEntree == nombre) {
             resetDisplay()
-            failureMessage.style.display = "flex"
-            answer.innerText = nombre
+            successNumberMessage.style.display = "flex"
+            input.classList.add("success")
+            input.readOnly = true
             checkButton.disabled = true
             setTimeout(() => {
                 checkButton.style.display = "none"
                 restartButton.style.display = "block"
                 menuButton.style.display = "block"
             }, 3000)
-            input.readOnly = true
-        }
+        } else
+            if (tentative > 0) {
+                if (nombreEntree > nombre) {
+                    resetDisplay()
+                    clearInput()
+                    setTimeout(() => {
+                        highNumberMessage.style.display = "flex"
+                        input.classList.add("error")
+                    }, 1);
+                } else {
+                    resetDisplay()
+                    clearInput()
+                    setTimeout(() => {
+                        lowNumberMessage.style.display = "flex"
+                        input.classList.add("error")
+                    }, 1);
+                }
+            } else {
+                resetDisplay()
+                failureMessage.style.display = "flex"
+                answer.innerText = nombre
+                checkButton.disabled = true
+                setTimeout(() => {
+                    checkButton.style.display = "none"
+                    restartButton.style.display = "block"
+                    menuButton.style.display = "block"
+                }, 3000)
+                input.readOnly = true
+            }   
     })
 
     restartButton.addEventListener('click', () => window.location.reload())
@@ -100,5 +107,9 @@ if (document.getElementById('input-number') || document.getElementById('check-bu
         menuButton.style.display = "none"
         input.classList.remove("error")
         input.classList.remove("success")
+    }
+
+    function clearInput() {
+        input.value = ''
     }
 }
